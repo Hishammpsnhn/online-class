@@ -1,8 +1,20 @@
-import { Typography } from "@material-ui/core";
-import React from "react";
+import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import { Paper } from '@material-ui/core';
+import { Avatar, Typography } from '@mui/material';
+import useStyles from './styles';
 
-const UserDetails = () => {
-  return    <Typography variant="h4">Hello mr Hisham</Typography>;
-};
+export default function UserDetails() {
+  const classes = useStyles();
+  return (
+    <Paper className={classes.paper}>
+      <Stack direction='row' justifyContent='space-between'>
+        <Typography variant='h4'>Hisham</Typography>
+        <Avatar>H</Avatar>
 
-export default UserDetails;
+      </Stack>
+      <Typography variant='h5'>Class 5</Typography>
+      <Typography variant='h5'>Gvhss school</Typography>
+    </Paper>
+  );
+}
