@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/db.js";
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql';
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString, buildSchema } from 'graphql';
 
@@ -31,6 +32,8 @@ dotenv.config()
 // connectDB()
 
 const app = express();
+
+app.use(cors());
 
 const ClassesType = new GraphQLObjectType({
   name: 'Class',
