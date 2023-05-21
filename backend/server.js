@@ -13,11 +13,11 @@ const classes = [
 ]
 
 const subjects = [
-  { id: 1, name: 'english', description: 'welcome to english one class', vedioIDs: [1, 2] },
-  { id: 2, name: 'english', description: 'welcome to english two class', vedioIDs: [] },
-  { id: 3, name: 'english', description: 'welcome to english third class', vedioIDs: [] },
-  { id: 4, name: 'maths', description: 'welcome to english one class', vedioIDs: [] },
-  { id: 5, name: 'science', description: 'welcome to english two class', vedioIDs: [3] },
+  { id: 1, name: 'english', url: 'https://www.shutterstock.com/shutterstock/photos/1191427996/display_1500/stock-vector-english-open-book-with-language-hand-drawn-doodles-and-lettering-on-white-background-education-1191427996.jpg', vedioIDs: [1, 2] },
+  { id: 2, name: 'english', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRVwVMf3T66kzgbyJPcFj2lPgskOo92o8EgbXneprCJAZIExaF5aAOjwdZqgXl2UeQyxPneoWipUw&usqp=CAU&ec=48600112', vedioIDs: [] },
+  { id: 3, name: 'english', url: 'https://oxfordsummercourses.com/static/8824d11a0c2c5b04069cfbb73558a1ef/2e781/Blog_Image_83_db756fe209.webp', vedioIDs: [] },
+  { id: 4, name: 'maths', url: 'https://img.freepik.com/premium-vector/open-book-icons-mathematics_74440-842.jpg?w=360', vedioIDs: [] },
+  { id: 5, name: 'science', url: 'https://thumbs.dreamstime.com/z/science-books-shelf-open-book-glasses-lettering-science-books-shelf-open-book-glasses-lettering-white-135179577.jpg', vedioIDs: [3] },
 ]
 
 const vedios = [
@@ -60,7 +60,7 @@ const SubjectsType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
     name: { type: GraphQLNonNull(GraphQLString) },
-    description: { type: GraphQLString },
+    url: { type: GraphQLString },
     vedioIDs: { type: GraphQLList(GraphQLInt) },
     vedios: {
       type: new GraphQLList(VedioType),

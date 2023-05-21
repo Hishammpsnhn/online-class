@@ -6,7 +6,7 @@ export default makeStyles((theme: Theme) => ({
         background: ' linear-gradient(to bottom, #009999 0%, #00ff99 100%)',
         backgroundRepeat: 'no-repeat',
         margin: 'auto',
-        marginTop: '2rem'
+        marginTop: '20px'
     },
     typographt:{
         padding: '2rem'

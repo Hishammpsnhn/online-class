@@ -4,11 +4,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import englisth from '../../images/images.jpg'
 import { Grid } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 
-const Subjects = () => {
+interface Props {
+    id:number
+    name:string
+    url:string
+}
+
+const Subjects = ({id,name,url}:Props) => {
     const navigate = useNavigate()
     const handleClick = () => {
         navigate('/vedios')
@@ -20,12 +25,12 @@ const Subjects = () => {
                     <CardMedia
                         component="img"
                         height="140"
-                        image={englisth}
-                        alt="green iguana"
+                        image={url}
+                        alt={name}
                     />
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            English
+                        <Typography gutterBottom variant="h5" component="div"  textTransform="uppercase">
+                            {name}
                         </Typography>
 
                     </CardContent>

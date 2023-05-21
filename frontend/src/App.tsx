@@ -29,7 +29,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/vedios" element={<VedioPage />} />
           <Route path="/admin" element={<AdminHome />} />
-          <Route path="/admin/subject" element={<AdminSubjects />} />
+          <Route path="/admin/subject/:id" element={<AdminSubjects />} />
           <Route path="/admin/vedios" element={<AdminVedios />} />
         </Routes>
       </BrowserRouter>

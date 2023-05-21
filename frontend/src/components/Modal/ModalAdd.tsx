@@ -102,17 +102,29 @@ const ModalAdd = ({ type, open, handleClose }: Props) => {
                             </>
                         )
                     }
-
-                    <TextField
-                        type="text"
-                        name="description"
-                        label="Description"
-                        value={description}
-                        onChange={handleInputChange}
-                        fullWidth
-                        required
-                        margin="normal"
-                    />
+                    {type !== 'subject' ? (
+                        <TextField
+                            type="text"
+                            name="description"
+                            label="Description"
+                            value={description}
+                            onChange={handleInputChange}
+                            fullWidth
+                            required
+                            margin="normal"
+                        />
+                    ) : (
+                        <TextField
+                            type="text"
+                            name="url"
+                            label="URL"
+                            value={url}
+                            onChange={handleInputChange}
+                            fullWidth
+                            required
+                            margin="normal"
+                        />
+                    )}
                     <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '5px' }}>
                         ADD CLASS
                     </Button>
