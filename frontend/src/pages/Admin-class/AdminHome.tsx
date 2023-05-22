@@ -4,7 +4,7 @@ import AddButton from "../../components/AddButton/AddButton";
 import { Container } from "@mui/material";
 import ModalAdd from "../../components/Modal/ModalAdd";
 import { useQuery } from "@apollo/client";
-import { GET_Classes } from "../../queries.js/queries";
+import { GET_Classes } from "../../queries/queries";
 import ClassSkeleton from "../../components/Skeleton/ClassSkeleton";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
 
@@ -26,14 +26,15 @@ const AdminHome = () => {
             <AddButton onClick={addClass} />
             {error ? <AlertIndicate type="error" error={error} /> :
                 loading ? (
-                    Array(5).fill(null).map((_,index) => (
+                    Array(5).fill(null).map((_, index) => (
                         <ClassSkeleton key={index} />
                     ))
                 ) : (
                     data.classes.map((item: { id: number, class: number }) => (
                         <Class key={item.id} id={item.id} std={item.class} />
                     ))
-                )}
+                )
+            }
 
         </Container>
     );

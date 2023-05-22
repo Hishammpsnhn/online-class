@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql';
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString, buildSchema } from 'graphql';
+import User from "./model/userModel.js";
 
+const users = []
 const classes = [
   { id: 1, class: 1, description: 'welcome to one class', subjectsIDs: [1, 4] },
   { id: 2, class: 2, description: 'welcome to two class', subjectsIDs: [2, 5] },
@@ -35,6 +37,16 @@ const app = express();
 
 app.use(cors());
 
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  description: 'This represents a User',
+  fields: () => ({
+    name: { type: GraphQLNonNull(GraphQLString) },
+    email: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
+    std: { type: GraphQLNonNull(GraphQLInt) },
+  })
+})
 const ClassesType = new GraphQLObjectType({
   name: 'Class',
   description: 'This represents a classes',
@@ -98,7 +110,7 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLInt }
       },
       resolve: (parent, args) => {
-        const classs = classes.find(classs=>classs.id === args.id) 
+        const classs = classes.find(classs => classs.id === args.id)
         return classs.subjectsIDs.map((subjectID) => {
           return subjects.find(subject => subject.id == subjectID);
         })
@@ -111,16 +123,48 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLInt }
       },
       resolve: (parent, args) => {
-       
-       return vedios.filter((vedio) => vedio.subject == args.id)
+
+        return vedios.filter((vedio) => vedio.subject == args.id)
       },
     }
 
   })
 })
 
+const RootMutationType = new GraphQLObjectType({
+  name: 'RootMutation',
+  description: 'Root mutation',
+  fields: () => ({
+
+    addUser: {
+      type: UserType,
+      description: 'Add user',
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) },
+        std: { type: GraphQLNonNull(GraphQLString) }
+      },
+      resolve: async (parent, args) => {
+        console.log(args)
+        const user = await User.create({
+          name: args.name,
+          email: args.email,
+          password: args.password,
+          enrollment: args.std
+        })
+        if(user){
+          return user;
+        }
+      }
+    }
+  })
+});
+
+
 const schema = new GraphQLSchema({
-  query: RootQueryType
+  query: RootQueryType,
+  mutation: RootMutationType
 })
 
 app.use('/graphql', graphqlHTTP({
@@ -128,6 +172,8 @@ app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true
 }));
+
+
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');

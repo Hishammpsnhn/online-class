@@ -1,6 +1,11 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Modal } from '@mui/material';
+import { ApolloClient,  InMemoryCache, useQuery } from "@apollo/client";
+import { ADD_Student, GET_Classes } from "../../queries/queries";
+import AlertIndicate from "../Alert/AlertIndicate";
+
+
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -21,27 +26,46 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [name, setName] = useState<string>('');
-    const [studentClass, setStudentClass] = useState<string>('');
+    const [std, setStd] = useState<string>('');
+    const {loading, error, data } = useQuery(GET_Classes);
+
+    const client = new ApolloClient({
+        uri: 'http://localhost:4000/graphql',
+        cache: new InMemoryCache(),
+    });
 
     const handleChange = (event: SelectChangeEvent<string>) => {
-        setStudentClass(event.target.value);
+        setStd(event.target.value);
     };
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-    
+
         if (name === 'email') {
-          setEmail(value);
+            setEmail(value);
         } else if (name === 'password') {
-          setPassword(value);
+            setPassword(value);
         } else if (name === 'name') {
-          setName(value);
+            setName(value);
         }
-      };
+    };
 
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
-        console.log(email, password, name, studentClass)
+        try {
+            const response = await client.mutate({
+                mutation: ADD_Student,
+                variables: {
+                    name,
+                    email,
+                    password,
+                    std: std.toString()
+                }
+            });
+            console.log(response.data); // Access the returned data
+        } catch (error) {
+            console.error('Non-Apollo Error:', error);
+        }
     };
     return (
         <Modal
@@ -88,13 +112,19 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={studentClass}
+                            value={std}
                             label="Class"
                             onChange={handleChange}
                         >
-                            <MenuItem value={1}>Class 1</MenuItem>
-                            <MenuItem value={2}>Class 2</MenuItem>
-                            <MenuItem value={3}>Class 3</MenuItem>
+                            {error ? <AlertIndicate type="error" error={error} /> :
+                                loading ? (
+                                    <Typography color='gray'>Loading ...</Typography>
+                                ) : (
+                                    data.classes.map((item: { id: number, class: number }) => (
+                                        <MenuItem key={item.id} value={item.id}>Class {item.class}</MenuItem>
+                                    ))
+                                )
+                            }
                         </Select>
                     </FormControl>
                     <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '5px' }}>

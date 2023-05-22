@@ -4,7 +4,7 @@ import { Container, Grid } from "@mui/material";
 import AddButton from "../../components/AddButton/AddButton";
 import ModalAdd from "../../components/Modal/ModalAdd";
 import { useQuery } from "@apollo/client";
-import { GET_Subjects } from "../../queries.js/queries";
+import { GET_Subjects } from "../../queries/queries";
 import { useParams } from "react-router-dom";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
 import SubjectSkeleton from "../../components/Skeleton/SubjectSkeleton";
