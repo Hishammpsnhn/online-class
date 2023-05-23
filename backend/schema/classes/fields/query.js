@@ -4,7 +4,7 @@ import { ClassesType, SubjectsType, VedioType } from "../type.js";
 export const classes = {
     type: GraphQLList(ClassesType),
     description: 'list of all classes',
-    // resolve: () => classes
+     resolve: () => []
 }
 
 export const subjects = {
@@ -13,6 +13,7 @@ export const subjects = {
     args: {
         id: { type: GraphQLInt }
     },
+    resolve: () => []
 //     resolve: (parent, args) => {
 //         const classs = classes.find(classs => classs.id === args.id)
 //         return classs.subjectsIDs.map((subjectID) => {

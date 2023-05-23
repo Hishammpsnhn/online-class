@@ -26,10 +26,13 @@ const AdminSubjects = () => {
     const AddSubject = () => {
         handleOpen()
     }
+    const addSubjectHanlder = () => {
+
+    }
     return (
         <Container>
             <AddButton onClick={AddSubject} />
-            <ModalAdd type="subject" open={open} handleClose={handleClose} />
+            <ModalAdd type="subject" open={open} handleClose={handleClose} submit={addSubjectHanlder} />
             {error ? <AlertIndicate type="error" error={error} /> : (
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {

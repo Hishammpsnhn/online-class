@@ -16,14 +16,20 @@ const AdminHome = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const addClass = () => {
+    const addClassBtn = () => {
         handleOpen();
     }
+    
+    const addClassHandler = (formData: {class:string}) => {
+        console.log(formData.class);
+    };
+
+
 
     return (
         <Container>
-            <ModalAdd type='class' open={open} handleClose={handleClose} />
-            <AddButton onClick={addClass} />
+            <ModalAdd type='class' open={open} handleClose={handleClose} submit={addClassHandler} />
+            <AddButton onClick={addClassBtn} />
             {error ? <AlertIndicate type="error" error={error} /> :
                 loading ? (
                     Array(5).fill(null).map((_, index) => (

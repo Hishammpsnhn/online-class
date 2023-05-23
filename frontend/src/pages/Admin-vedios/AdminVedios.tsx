@@ -13,10 +13,13 @@ const AdminVedios = () => {
   const addVedio = ()=>{
       handleOpen()
   }
+  const addVedioHandler =()=>{
+
+  }
   return (
     <Container>
       <AddButton onClick={addVedio} />
-      <ModalAdd type="vedio" open={open} handleClose={handleClose}/>
+      <ModalAdd type="vedio" open={open} handleClose={handleClose} submit={addVedioHandler}/>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         <VedioPlayer />
         <VedioPlayer />

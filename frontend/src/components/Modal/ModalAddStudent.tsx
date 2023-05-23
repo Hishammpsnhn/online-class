@@ -1,9 +1,10 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Modal } from '@mui/material';
-import { ApolloClient,  InMemoryCache, useQuery } from "@apollo/client";
+import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 import { ADD_Student, GET_Classes } from "../../queries/queries";
 import AlertIndicate from "../Alert/AlertIndicate";
+import { handleFormChange } from "../../utils/utils";
 
 
 
@@ -22,50 +23,51 @@ interface Props {
     open: boolean;
     handleClose: () => void;
 }
+interface FormData {
+    name: string;
+    email: string;
+    password: string;
+    class: string;
+}
 const ModalAddStudent = ({ open, handleClose }: Props) => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [name, setName] = useState<string>('');
-    const [std, setStd] = useState<string>('');
-    const {loading, error, data } = useQuery(GET_Classes);
+    const initialState: FormData = { name: '', email: '', password: '', class: "" }
+    const [formData, setFormData] = useState(initialState)
+
+    //    const { loading, error, data } = useQuery(GET_Classes);
+
 
     const client = new ApolloClient({
         uri: 'http://localhost:4000/graphql',
         cache: new InMemoryCache(),
     });
 
-    const handleChange = (event: SelectChangeEvent<string>) => {
-        setStd(event.target.value);
-    };
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
 
-        if (name === 'email') {
-            setEmail(value);
-        } else if (name === 'password') {
-            setPassword(value);
-        } else if (name === 'name') {
-            setName(value);
-        }
+
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        handleFormChange(event.target as HTMLInputElement, setFormData);
+    };
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+        handleFormChange(event.target as HTMLSelectElement, setFormData);
     };
 
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
-        try {
-            const response = await client.mutate({
-                mutation: ADD_Student,
-                variables: {
-                    name,
-                    email,
-                    password,
-                    std: std.toString()
-                }
-            });
-            console.log(response.data); // Access the returned data
-        } catch (error) {
-            console.error('Non-Apollo Error:', error);
-        }
+        console.log(formData)
+        // try {
+        //     const response = await client.mutate({
+        //         mutation: ADD_Student,
+        //         variables: {
+        //             name,
+        //             email,
+        //             password,
+        //             std: std.toString()
+        //         }
+        //     });
+        //     console.log(response.data); // Access the returned data
+        // } catch (error) {
+        //     console.error('Non-Apollo Error:', error);
+        // }
     };
     return (
         <Modal
@@ -80,7 +82,7 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                         type="text"
                         name="name"
                         label="Name"
-                        value={name}
+                        value={formData.name}
                         onChange={handleInputChange}
                         fullWidth
                         required
@@ -90,7 +92,7 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                         type="email"
                         name="email"
                         label="Email"
-                        value={email}
+                        value={formData.email}
                         onChange={handleInputChange}
                         fullWidth
                         required
@@ -100,7 +102,7 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                         type="password"
                         name="password"
                         label="Password"
-                        value={password}
+                        value={formData.password}
                         onChange={handleInputChange}
                         fullWidth
                         required
@@ -112,11 +114,13 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={std}
+                            name="class"
+                            value={formData.class}
                             label="Class"
-                            onChange={handleChange}
+                            onChange={handleSelectChange}
+                            // required
                         >
-                            {error ? <AlertIndicate type="error" error={error} /> :
+                            {/* {error ? <AlertIndicate type="error" error={error} /> :
                                 loading ? (
                                     <Typography color='gray'>Loading ...</Typography>
                                 ) : (
@@ -124,7 +128,7 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                                         <MenuItem key={item.id} value={item.id}>Class {item.class}</MenuItem>
                                     ))
                                 )
-                            }
+                            } */}
                         </Select>
                     </FormControl>
                     <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '5px' }}>

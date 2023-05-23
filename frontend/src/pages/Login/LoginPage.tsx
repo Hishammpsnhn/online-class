@@ -1,26 +1,22 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, TextField, Paper, Typography } from '@mui/material';
 import useStyles from './styles';
+import { handleFormChange } from '../../utils/utils';
 
 
 const LoginPage: React.FC = () => {
 
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const initialState = {email: '', password: ''}
+    const [formData,setFormData] = useState(initialState)
 
     const classes = useStyles();
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        if (name === 'email') {
-            setEmail(value);
-        } else if (name === 'password') {
-            setPassword(value);
-        }
+        handleFormChange(event.target as HTMLInputElement,  setFormData);
     };
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault()
-        console.log(email, password)
+        console.log(formData)
     };
 
     return (
@@ -32,7 +28,7 @@ const LoginPage: React.FC = () => {
                         type="email"
                         name="email"
                         label="Email"
-                        value={email}
+                        value={formData.email}
                         onChange={handleInputChange}
                         fullWidth
                         required
@@ -42,7 +38,7 @@ const LoginPage: React.FC = () => {
                         type="password"
                         name="password"
                         label="Password"
-                        value={password}
+                        value={formData.password}
                         onChange={handleInputChange}
                         fullWidth
                         required
