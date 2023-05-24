@@ -11,13 +11,16 @@ const videoSchema = new mongoose.Schema({
     },
     url: {
         type: String,
+        required: true,
         required: true
     },
     subject: {
         type: mongoose.Schema.Types.ObjectId,
+        required:true,
         ref: 'Subject'
+
     }
 }, { timestamps: true });
 
-const Video = mongoose.model('Video', videoSchema);
+const Video = mongoose.model('Videos', videoSchema);
 export default Video;

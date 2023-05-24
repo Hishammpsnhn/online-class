@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 const classSchema = mongoose.Schema(
     {
         class: { type: Number, required: true },
-        descriptin: { type: String },
         subjects: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subject'

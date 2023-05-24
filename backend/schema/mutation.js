@@ -1,11 +1,14 @@
 import { GraphQLObjectType } from "graphql";
-import {addUser} from './classes/fields/mutations.js'
+import {addClass, addUser,addVedio,addSubject} from './classes/fields/mutations.js'
 
 const mutation = new GraphQLObjectType({
     name: 'RootMutation',
     description: 'Root mutation',
     fields: {
-        addUser
+         addUser,
+        addClass,
+        addSubject,
+        addVedio
     }
 });
 

@@ -5,7 +5,9 @@ const query = new GraphQLObjectType({
     name: 'Query',
     description: 'Root Query',
     fields:{
-         classes,subjects,vedios
+         classes,
+         subjects,
+         vedios
     }
 })
 

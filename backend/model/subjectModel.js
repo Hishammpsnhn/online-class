@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
 
 const subjectSchema = new mongoose.Schema({
-    name: {
+    subject: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: true
     },
     videos: [{
         type: mongoose.Schema.Types.ObjectId,
