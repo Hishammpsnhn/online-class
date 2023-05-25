@@ -1,22 +1,5 @@
 import { gql } from "@apollo/client";
 
-const GET_Classes = gql`
-  query GetClasses {
-    classes{
-        id,
-       class
-      }
-  }
-`;
-const GET_Subjects = gql`
-  query GetSubjects($id: Int!) {
-    subjects(id: $id) {
-      id
-      name
-      url
-    }
-  }
-`;
 //mutation
 const ADD_Student = gql`
   mutation addUser($name: String!, $email: String!, $password: String!, $std: String!) {
@@ -27,4 +10,13 @@ const ADD_Student = gql`
     }
   }
 `;
-export {GET_Classes,GET_Subjects,ADD_Student}
+
+const ADD_Class = gql`
+  mutation addClass($class: Int!){
+    addClass(class: $class){
+      id
+      class
+    }
+  }
+`;
+export { ADD_Student, ADD_Class }

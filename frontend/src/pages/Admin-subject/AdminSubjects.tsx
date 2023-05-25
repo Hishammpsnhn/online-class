@@ -4,8 +4,8 @@ import { Container, Grid } from "@mui/material";
 import AddButton from "../../components/AddButton/AddButton";
 import ModalAdd from "../../components/Modal/ModalAdd";
 import { useQuery } from "@apollo/client";
-import { GET_Subjects } from "../../queries/queries";
-import { useParams } from "react-router-dom";
+import { GET_Subjects } from "../../graphql/queries";
+import { useNavigate, useParams } from "react-router-dom";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
 import SubjectSkeleton from "../../components/Skeleton/SubjectSkeleton";
 
@@ -13,15 +13,20 @@ const AdminSubjects = () => {
     const [open, setOpen] = React.useState(false);
 
     const { id } = useParams<{ id: string }>();
-    const parsedId = Number(id);
 
     const { loading, error, data } = useQuery(GET_Subjects, {
-        variables: { id: parsedId },
+        variables: { id: id },
     });
-    console.log(loading, error, data);
+
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const navigate = useNavigate()
+    
+    const handleClick = (id:string) => {
+        navigate(`/admin/vedios/${id}`);
+    }
 
     const AddSubject = () => {
         handleOpen()
@@ -29,6 +34,7 @@ const AdminSubjects = () => {
     const addSubjectHanlder = () => {
 
     }
+    
     return (
         <Container>
             <AddButton onClick={AddSubject} />
@@ -41,8 +47,8 @@ const AdminSubjects = () => {
                                 <SubjectSkeleton key={index} />
                             ))
                         ) : (
-                            data.subjects.map((item:{id:number,name:string,url:string}) => (
-                                <Subjects key={item.id} id={item.id} name={item.name} url={item.url} />
+                            data.subjects.map((item:{id:string,subject:string}) => (
+                                <Subjects  key={item.id} id={item.id} name={item.subject} onClick={handleClick}  />
                             ))
                         )
                     }

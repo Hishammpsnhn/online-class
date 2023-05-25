@@ -65,6 +65,6 @@ export async function addNewVedio(parent, args) {
 //queries
 
 export async function AllClasses() {
-    const classes = Class.find({})
+    const classes =  Class.find({}).sort({ class: 1 });
     return classes
 }

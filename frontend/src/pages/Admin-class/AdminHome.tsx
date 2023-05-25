@@ -1,17 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Class from "../../components/Class/Class";
 import AddButton from "../../components/AddButton/AddButton";
 import { Container } from "@mui/material";
 import ModalAdd from "../../components/Modal/ModalAdd";
-import { useQuery } from "@apollo/client";
-import { GET_Classes } from "../../queries/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_Classes } from "../../graphql/queries";
 import ClassSkeleton from "../../components/Skeleton/ClassSkeleton";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
+import { client } from "../../utils/utils";
+import { ADD_Class } from "../../graphql/mutaion";
+
+interface ClassRoom {
+    // Define the properties of your class room object here
+    id: string;
+    class: number;
+}
 
 const AdminHome = () => {
     const [open, setOpen] = React.useState(false);
 
-    const { loading, error, data } = useQuery(GET_Classes);
+    const { loading, error, data ,refetch} = useQuery(GET_Classes);
+    const [addClassMutation] = useMutation(ADD_Class);
+
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -19,9 +29,32 @@ const AdminHome = () => {
     const addClassBtn = () => {
         handleOpen();
     }
-    
-    const addClassHandler = (formData: {class:string}) => {
-        console.log(formData.class);
+
+    const addClassHandler = async (formData: { class: string }) => {
+        const classRoom = parseInt(formData.class)
+        if (classRoom < 12 && classRoom > 0) {
+            const isClassExist = data.classes.some((obj: { class: number }) => obj.class === classRoom);
+            if (!isClassExist) {
+                try {
+                    await addClassMutation({
+                        variables: {
+                            class: classRoom,
+                        },
+                    });
+
+                    refetch();
+                    handleClose();
+
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                alert("classRoom already exists")
+            }
+
+        } else {
+            alert("Invalid classroom")
+        }
     };
 
 
@@ -36,7 +69,7 @@ const AdminHome = () => {
                         <ClassSkeleton key={index} />
                     ))
                 ) : (
-                    data.classes.map((item: { id: number, class: number }) => (
+                    data.classes.map((item: ClassRoom) => (
                         <Class key={item.id} id={item.id} std={item.class} />
                     ))
                 )

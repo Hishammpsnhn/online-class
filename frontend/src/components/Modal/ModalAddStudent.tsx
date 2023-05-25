@@ -2,7 +2,8 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEve
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Modal } from '@mui/material';
 import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
-import { ADD_Student, GET_Classes } from "../../queries/queries";
+import {  GET_Classes } from "../../graphql/queries";
+import {ADD_Student} from '../../graphql/mutaion'
 import AlertIndicate from "../Alert/AlertIndicate";
 import { handleFormChange } from "../../utils/utils";
 
@@ -34,14 +35,6 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
     const [formData, setFormData] = useState(initialState)
 
     //    const { loading, error, data } = useQuery(GET_Classes);
-
-
-    const client = new ApolloClient({
-        uri: 'http://localhost:4000/graphql',
-        cache: new InMemoryCache(),
-    });
-
-
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         handleFormChange(event.target as HTMLInputElement, setFormData);

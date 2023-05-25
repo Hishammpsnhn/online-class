@@ -30,7 +30,7 @@ function App() {
           <Route path="/vedios" element={<VedioPage />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/admin/subject/:id" element={<AdminSubjects />} />
-          <Route path="/admin/vedios" element={<AdminVedios />} />
+          <Route path="/admin/vedios/:id" element={<AdminVedios />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

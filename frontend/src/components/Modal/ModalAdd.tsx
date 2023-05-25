@@ -1,4 +1,4 @@
-import { Box, Button,TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Modal } from '@mui/material';
 import { handleFormChange } from "../../utils/utils";
@@ -17,7 +17,7 @@ const style = {
 };
 interface Props {
     open: boolean;
-    type: string;
+    type: 'class' | 'subject' | 'vedio';
     handleClose: () => void;
     submit: (formData: FormData) => void;
 }
@@ -26,23 +26,23 @@ interface FormData {
     description: string;
     url: string;
     title: string;
-    subject:string;
-  }
+    subject: string;
+}
 
 const ModalAdd = ({ type, open, handleClose, submit }: Props) => {
 
-    const initialState:FormData = { class: '', description: '', url: '',title:"",subject:"" }
+    const initialState: FormData = { class: '', description: '', url: '', title: "", subject: "" }
     const [formData, setFormData] = useState(initialState)
 
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        handleFormChange(event.target as HTMLInputElement,  setFormData);
+        handleFormChange(event.target as HTMLInputElement, setFormData);
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         submit(formData);
-      };
+    };
 
 
     return (
@@ -78,8 +78,8 @@ const ModalAdd = ({ type, open, handleClose, submit }: Props) => {
                             margin="normal"
                         />
                     )}
-                   
-                    
+
+
                     {
                         type === 'vedio' && (
                             <>
@@ -93,7 +93,7 @@ const ModalAdd = ({ type, open, handleClose, submit }: Props) => {
                                     required
                                     margin="normal"
                                 />
-                                  
+
                                 <TextField
                                     type="text"
                                     name="description"
@@ -104,7 +104,7 @@ const ModalAdd = ({ type, open, handleClose, submit }: Props) => {
                                     required
                                     margin="normal"
                                 />
-                                  
+
                                 <TextField
                                     type="text"
                                     name="url"
@@ -118,7 +118,7 @@ const ModalAdd = ({ type, open, handleClose, submit }: Props) => {
                             </>
                         )
                     }
-                
+
                     <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '5px' }}>
                         ADD CLASS
                     </Button>

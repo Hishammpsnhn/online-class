@@ -4,7 +4,7 @@ import useStyles from './styles';
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-    id:number
+    id:string;
     std:number
 }
 

@@ -5,31 +5,41 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Grid } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
+import englishImage from '../../images/english.jpg'
+import mathsImage from '../../images/maths.jpg';
 
 interface Props {
-    id:number
-    name:string
-    url:string
+    id: string
+    name: string
+    onClick: (id:string) => void
 }
+interface SubjectImages {
+    [key: string]: string;
+  }
 
-const Subjects = ({id,name,url}:Props) => {
-    const navigate = useNavigate()
-    const handleClick = () => {
-        navigate('/vedios')
+const Subjects = ({ id, name,onClick }: Props) => {
+ 
+    const subjectImages:SubjectImages = {
+        english: englishImage,
+        maths: mathsImage,
+    };
+    const handleClick = () =>{
+        onClick(id)
     }
+
+
     return (
         <Grid item xs={12} sm={6} md={4} >
-            <Card sx={{ maxWidth: 345 }} style={{margin:'auto'}} onClick={handleClick}>
+            <Card sx={{ maxWidth: 345 }} style={{ margin: 'auto' }} onClick={handleClick}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
                         height="140"
-                        image={url}
+                        image={subjectImages[name]}
                         alt={name}
                     />
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div"  textTransform="uppercase">
+                        <Typography gutterBottom variant="h5" component="div" textTransform="uppercase">
                             {name}
                         </Typography>
 
