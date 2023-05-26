@@ -3,38 +3,56 @@ import Subjects from "../../components/Subjects/Subjects";
 import { Container, Grid } from "@mui/material";
 import AddButton from "../../components/AddButton/AddButton";
 import ModalAdd from "../../components/Modal/ModalAdd";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_Subjects } from "../../graphql/queries";
 import { useNavigate, useParams } from "react-router-dom";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
 import SubjectSkeleton from "../../components/Skeleton/SubjectSkeleton";
+import { ADD_Subject } from "../../graphql/mutaion";
 
 const AdminSubjects = () => {
     const [open, setOpen] = React.useState(false);
 
     const { id } = useParams<{ id: string }>();
 
-    const { loading, error, data } = useQuery(GET_Subjects, {
+    const { loading, error, data, refetch } = useQuery(GET_Subjects, {
         variables: { id: id },
     });
+    const [addSubjectMutation] = useMutation(ADD_Subject);
 
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const navigate = useNavigate()
-    
-    const handleClick = (id:string) => {
+
+    const handleClick = (id: string) => {
         navigate(`/admin/vedios/${id}`);
     }
 
     const AddSubject = () => {
         handleOpen()
     }
-    const addSubjectHanlder = () => {
+    const addSubjectHanlder = async(formData: { subject: string }) => {
 
+        if (formData.subject) {
+            try {
+                await addSubjectMutation({
+                    variables: {
+                        id:id,
+                        subject: formData.subject
+                    },
+                });
+
+                refetch();
+                handleClose();
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
-    
+
     return (
         <Container>
             <AddButton onClick={AddSubject} />
@@ -47,8 +65,8 @@ const AdminSubjects = () => {
                                 <SubjectSkeleton key={index} />
                             ))
                         ) : (
-                            data.subjects.map((item:{id:string,subject:string}) => (
-                                <Subjects  key={item.id} id={item.id} name={item.subject} onClick={handleClick}  />
+                            data.subjects.map((item: { id: string, subject: string }) => (
+                                <Subjects key={item.id} id={item.id} name={item.subject} onClick={handleClick} />
                             ))
                         )
                     }

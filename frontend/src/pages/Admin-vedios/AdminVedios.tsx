@@ -5,20 +5,21 @@ import AddButton from "../../components/AddButton/AddButton";
 import ModalAdd from "../../components/Modal/ModalAdd";
 import { GET_Vedios } from "../../graphql/queries";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
 import SubjectSkeleton from "../../components/Skeleton/SubjectSkeleton";
 import Subjects from "../../components/Subjects/Subjects";
+import { ADD_Vedio } from "../../graphql/mutaion";
 
 const AdminVedios = () => {
   const [open, setOpen] = React.useState(false);
 
   const { id } = useParams<{ id: string }>();
 
-  const { loading, error, data } = useQuery(GET_Vedios, {
+  const { loading, error, data,refetch } = useQuery(GET_Vedios, {
     variables: { id: id },
   });
-  console.log(data, error);
+  const [addVedioMutation] = useMutation(ADD_Vedio);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -26,9 +27,28 @@ const AdminVedios = () => {
   const addVedioModel = () => {
     handleOpen()
   }
-  const addVedioHandler = () => {
+  const addVedioHandler = async (formData: { title: string, description: string, url: string }) => {
+    console.log(formData.description, formData.title, formData.url, id)
 
+
+    try {
+      await addVedioMutation({
+        variables: {
+          id: id,
+          title: formData.title,
+          description: formData.description,
+          url: formData.url
+        },
+      });
+
+      refetch();
+      handleClose();
+
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   return (
     <Container>
       <AddButton onClick={addVedioModel} />
