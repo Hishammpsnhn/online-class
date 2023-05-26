@@ -7,12 +7,19 @@ import Video from "../../model/VedioModal.js";
 
 //add a student by admin
 export async function addStudent(parent, args) {
-    console.log(args)
+    const {name,email,password,std}= args;
+
+    const userExists = await User.findOne({ email })
+
+    if (userExists) {
+      throw new Error("User already exists")
+    }
+  
     const user = await User.create({
-        name: args.name,
-        email: args.email,
-        password: args.password,
-        enrollment: args.std
+        name,
+        email,
+        password,
+        enrollment:std
     })
     if (user) {
         return user;

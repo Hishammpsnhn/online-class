@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Modal } from '@mui/material';
-import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
+import { ApolloClient, InMemoryCache, useMutation, useQuery } from "@apollo/client";
 import {  GET_Classes } from "../../graphql/queries";
 import {ADD_Student} from '../../graphql/mutaion'
 import AlertIndicate from "../Alert/AlertIndicate";
@@ -23,6 +23,7 @@ const style = {
 interface Props {
     open: boolean;
     handleClose: () => void;
+    
 }
 interface FormData {
     name: string;
@@ -34,7 +35,8 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
     const initialState: FormData = { name: '', email: '', password: '', class: "" }
     const [formData, setFormData] = useState(initialState)
 
-    //    const { loading, error, data } = useQuery(GET_Classes);
+       const { loading, error, data } = useQuery(GET_Classes);
+       const [addStudendMutation] = useMutation(ADD_Student);
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         handleFormChange(event.target as HTMLInputElement, setFormData);
@@ -47,20 +49,20 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
         console.log(formData)
-        // try {
-        //     const response = await client.mutate({
-        //         mutation: ADD_Student,
-        //         variables: {
-        //             name,
-        //             email,
-        //             password,
-        //             std: std.toString()
-        //         }
-        //     });
-        //     console.log(response.data); // Access the returned data
-        // } catch (error) {
-        //     console.error('Non-Apollo Error:', error);
-        // }
+        try {
+            await addStudendMutation({
+                variables: {
+                    name:formData.name,
+                    email:formData.email,
+                    password:formData.password,
+                    std:formData.class
+                }
+            });
+            handleClose();
+        } catch (error) {
+            console.error('Non-Apollo Error:', error);
+            alert(error);
+        }
     };
     return (
         <Modal
@@ -69,6 +71,7 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
+            
             <Box sx={style}>
                 <form onSubmit={handleSubmit} >
                     <TextField
@@ -111,9 +114,9 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                             value={formData.class}
                             label="Class"
                             onChange={handleSelectChange}
-                            // required
+                            required
                         >
-                            {/* {error ? <AlertIndicate type="error" error={error} /> :
+                            {error ? <AlertIndicate type="error" error={error} /> :
                                 loading ? (
                                     <Typography color='gray'>Loading ...</Typography>
                                 ) : (
@@ -121,7 +124,7 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
                                         <MenuItem key={item.id} value={item.id}>Class {item.class}</MenuItem>
                                     ))
                                 )
-                            } */}
+                            }
                         </Select>
                     </FormControl>
                     <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '5px' }}>

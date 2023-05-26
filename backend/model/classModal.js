@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const classSchema = mongoose.Schema(
     {
-        class: { type: Number, required: true },
+        class: { type: Number,required: true,unique: true},
         subjects: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subject'

@@ -6,7 +6,7 @@ const ADD_Student = gql`
     addUser(name: $name, email: $email, password: $password, std: $std) {
       name
       email
-      std
+      
     }
   }
 `;

@@ -49,6 +49,7 @@ const AdminSubjects = () => {
 
             } catch (error) {
                 console.log(error);
+                alert(error);
             }
         }
     }

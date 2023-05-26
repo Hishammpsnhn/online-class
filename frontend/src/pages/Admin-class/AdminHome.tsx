@@ -47,6 +47,7 @@ const AdminHome = () => {
 
                 } catch (error) {
                     console.log(error);
+                    alert(error);
                 }
             } else {
                 alert("classRoom already exists")
