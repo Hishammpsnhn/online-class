@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLString } from "graphql";
+import { GraphQLBoolean, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLString } from "graphql";
 
 export const UserType = new GraphQLObjectType({
     name: 'User',
@@ -8,6 +8,19 @@ export const UserType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
         password: { type: GraphQLNonNull(GraphQLString) },
         std: { type: GraphQLNonNull(GraphQLInt) },
+    })
+})
+
+export const UserLoginType = new GraphQLObjectType({
+    name: 'UserLogin',
+    description: 'This represents a User login',
+    fields: () => ({
+        name: { type: GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLNonNull(GraphQLString) },
+        stdID: { type: GraphQLNonNull(GraphQLID) },
+        std: { type: GraphQLNonNull(GraphQLInt) },        
+        isAdmin: { type: GraphQLNonNull(GraphQLBoolean)},
+        token:{type:GraphQLString}
     })
 })
 export const ClassesType = new GraphQLObjectType({

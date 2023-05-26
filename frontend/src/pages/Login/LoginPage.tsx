@@ -2,21 +2,43 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, TextField, Paper, Typography } from '@mui/material';
 import useStyles from './styles';
 import { handleFormChange } from '../../utils/utils';
+import { LOGIN_Student } from '../../graphql/mutaion';
+import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginPage: React.FC = () => {
 
-    const initialState = {email: '', password: ''}
-    const [formData,setFormData] = useState(initialState)
+    const initialState = { email: '', password: '' }
+    const [formData, setFormData] = useState(initialState)
+    const [loginStudendMutation] = useMutation(LOGIN_Student);
 
     const classes = useStyles();
+    const navigate = useNavigate()
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        handleFormChange(event.target as HTMLInputElement,  setFormData);
+        handleFormChange(event.target as HTMLInputElement, setFormData);
     };
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
         console.log(formData)
+        event.preventDefault();
+        try {
+            const { data } = await loginStudendMutation({
+                variables: {
+                    email: formData.email,
+                    password: formData.password,
+                }
+            });
+            // Access the returned data from the server
+            localStorage.setItem('userInfo', JSON.stringify(data.login));
+            navigate('/home')
+            
+        } catch (error) {
+            console.error('Non-Apollo Error:', error);
+            alert(error);
+        }
+
     };
 
     return (

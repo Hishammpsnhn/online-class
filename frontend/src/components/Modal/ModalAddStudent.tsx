@@ -48,7 +48,6 @@ const ModalAddStudent = ({ open, handleClose }: Props) => {
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
-        console.log(formData)
         try {
             await addStudendMutation({
                 variables: {
