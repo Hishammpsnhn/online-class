@@ -7,7 +7,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_Classes } from "../../graphql/queries";
 import ClassSkeleton from "../../components/Skeleton/ClassSkeleton";
 import AlertIndicate from "../../components/Alert/AlertIndicate";
-import { client } from "../../utils/utils";
 import { ADD_Class } from "../../graphql/mutaion";
 
 interface ClassRoom {
@@ -19,7 +18,7 @@ interface ClassRoom {
 const AdminHome = () => {
     const [open, setOpen] = React.useState(false);
 
-    const { loading, error, data ,refetch} = useQuery(GET_Classes);
+    const { loading, error, data, refetch } = useQuery(GET_Classes);
     const [addClassMutation] = useMutation(ADD_Class);
 
 

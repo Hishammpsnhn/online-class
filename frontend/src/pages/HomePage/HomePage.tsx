@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect,useContext } from "react";
 import UserDetails from "../../components/UserDetails/UserDetails";
 import { Container } from "@material-ui/core";
 import Subjects from "../../components/Subjects/Subjects";
 import Grid from '@mui/material/Grid';
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const HomePage = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate()
+  
+  useEffect(() => {
+    if(user?.isAdmin){
+      navigate("/admin")
+    }
+  }, []);
+  
   return (
     <Container>
       <UserDetails/>

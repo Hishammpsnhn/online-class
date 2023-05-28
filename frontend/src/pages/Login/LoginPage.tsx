@@ -1,10 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { Button, TextField, Paper, Typography } from '@mui/material';
 import useStyles from './styles';
 import { handleFormChange } from '../../utils/utils';
 import { LOGIN_Student } from '../../graphql/mutaion';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/Header/Header';
 
 
 const LoginPage: React.FC = () => {
@@ -18,6 +19,19 @@ const LoginPage: React.FC = () => {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         handleFormChange(event.target as HTMLInputElement, setFormData);
     };
+
+    useEffect(() => {
+        const userInfo = localStorage.getItem("userInfo")
+        if (userInfo) {
+            const user = JSON.parse(userInfo);
+            if (user?.isAdmin) {
+                navigate('/admin')
+            }else{
+                navigate('/home')
+            }
+        }
+    }, [navigate]);
+
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
@@ -33,7 +47,7 @@ const LoginPage: React.FC = () => {
             // Access the returned data from the server
             localStorage.setItem('userInfo', JSON.stringify(data.login));
             navigate('/home')
-            
+
         } catch (error) {
             console.error('Non-Apollo Error:', error);
             alert(error);
@@ -42,6 +56,8 @@ const LoginPage: React.FC = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className={classes.container}>
             <Paper className={classes.paper}>
                 <Typography variant='h4' mt={2} textAlign={'center'}>LOGIN</Typography>
@@ -72,6 +88,7 @@ const LoginPage: React.FC = () => {
                 </form>
             </Paper>
         </div>
+        </>
     );
 };
 
