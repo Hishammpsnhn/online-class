@@ -1,4 +1,3 @@
-import { escape } from 'querystring';
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,6 +5,8 @@ type User = {
   name: string;
   email: string;
   isAdmin: boolean;
+  std: number;
+  stdID: string;
 };
 
 type UserContextType = {
@@ -23,16 +24,29 @@ type UserProviderProps = {
 };
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+
+  const userInfo = localStorage.getItem("userInfo")
+  console.log(userInfo, "from ")
+
+  if (userInfo) {
+    var ParseUser = JSON.parse(userInfo)
+  }
+
+  const [user, setUser] = useState<User | null>(ParseUser);
 
   const navigate = useNavigate()
 
+  // useEffect(() => {
+  //   if(userInfo){
+  //     const ParseUser = JSON.parse(userInfo);
+  //     setUser(ParseUser);
+  //   }
+  // }, [userInfo])
+
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo")
-    if (userInfo) {
-      const ParseUser = JSON.parse(userInfo)
-      setUser(ParseUser);
-      if (ParseUser.isAdmin) {
+
+    if (user) {
+      if (user.isAdmin) {
         navigate('/admin')
       } else {
         navigate('/home')
@@ -40,9 +54,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } else {
       navigate('/');
     }
-  }, []);
-
-
+  }, [])
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

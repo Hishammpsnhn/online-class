@@ -25,7 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
-            <Route path="/vedios" element={<VedioPage />} />
+            <Route path="/vedios/:id" element={<VedioPage />} />
 
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/admin/subject/:id" element={<AdminSubjects />} />

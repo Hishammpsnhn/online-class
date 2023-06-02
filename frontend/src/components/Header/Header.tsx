@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ModalAddStudent from '../Modal/ModalAddStudent';
 import { UserContext } from '../../context/UserContext';
 import { AppBar } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -23,7 +24,8 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const { user } = React.useContext(UserContext);
+  const { user,setUser } = React.useContext(UserContext);
+  const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -48,6 +50,11 @@ function Header() {
     if (setting === 'Add Student') {
       handleOpen();
       handleCloseUserMenu()
+    } else if (setting === "Logout") {
+      localStorage.removeItem('userInfo');
+      setUser(null)
+      handleCloseUserMenu();
+      navigate('/')
     } else {
       handleCloseUserMenu()
     }
@@ -148,7 +155,7 @@ function Header() {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar>{user?.name.charAt(0)}</Avatar>
                   </IconButton>
                 </Tooltip>
                 <Menu
