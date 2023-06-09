@@ -192,7 +192,8 @@ function Header() {
           </Toolbar>
         </Container>
       </AppBar>
-      <ModalAddStudent open={open} handleClose={handleClose} />
+      {user?.isAdmin && <ModalAddStudent open={open} handleClose={handleClose} />}
+
     </>
   );
 }

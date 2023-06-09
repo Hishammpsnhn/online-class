@@ -24,12 +24,12 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/home" element={<HomePage />} />
+            {/* <Route path="/home" element={<HomePage />} />
             <Route path="/vedios/:id" element={<VedioPage />} />
 
             <Route path="/admin" element={<AdminHome />} />
             <Route path="/admin/subject/:id" element={<AdminSubjects />} />
-            <Route path="/admin/vedios/:id" element={<AdminVedios />} />
+            <Route path="/admin/vedios/:id" element={<AdminVedios />} /> */}
           </Routes>
         </UserProvider>
       </BrowserRouter>

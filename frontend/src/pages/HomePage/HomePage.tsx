@@ -13,7 +13,6 @@ import SubjectSkeleton from "../../components/Skeleton/SubjectSkeleton";
 const HomePage = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate()
-console.log(user)
   const { loading, error, data, refetch } = useQuery(GET_Subjects, {
     variables: { id: user?.stdID },
   });

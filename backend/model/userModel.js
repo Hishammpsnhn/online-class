@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema(
             ref: 'Class'
         },
         password: { type: String, required: true },
-        isAdmin: { type: Boolean, required: true, default: false }
+        isAdmin: { type: Boolean, required: true, default: false },
+        loggedIn: { type: Boolean, default: false }
     },
     {
         timestamps: true

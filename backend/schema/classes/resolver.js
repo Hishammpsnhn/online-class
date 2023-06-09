@@ -2,7 +2,7 @@ import Class from "../../model/classModal.js";
 import Subject from "../../model/subjectModel.js";
 import User from "../../model/userModel.js";
 import Video from "../../model/VedioModal.js";
-import generateToken from "../../utils/generateToken.js";
+import {generateToken } from "../../utils/utils.js";
 
 //mutation
 
@@ -72,8 +72,14 @@ export async function addNewVedio(parent, args) {
 
 export async function UserLogin(parent, args) {
     const { email, password } = args;
+
     const user = await User.findOne({ email })
     if (user && user.matchPassword(password)) {
+        if (user.loggedIn) {
+            throw new Error('User is already logged in');
+        }
+        user.loggedIn = true;
+        await user.save();
         const classRoom = await Class.findById(user.enrollment)
         if (classRoom) {
             return ({
@@ -82,10 +88,10 @@ export async function UserLogin(parent, args) {
                 email: user.email,
                 isAdmin: user.isAdmin,
                 stdID: user.enrollment,
-                std:classRoom.class,
+                std: classRoom.class,
                 token: generateToken(user._id),
             })
-        }else{
+        } else {
             throw new Error("Classroom does not exist")
         }
 
