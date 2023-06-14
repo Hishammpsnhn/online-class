@@ -14,6 +14,14 @@ const LOGIN_Student = gql`
     }
   }
 `;
+const LOGOUT_Student = gql`
+  mutation login($email: String!) {
+    logout(email: $email) {
+      name
+      email
+    }
+  }
+`;
 const ADD_Student = gql`
   mutation addUser($name: String!, $email: String!, $password: String!, $std: String!) {
     addUser(name: $name, email: $email, password: $password, std: $std) {
@@ -46,4 +54,4 @@ const ADD_Vedio = gql`
     }
   }
 `;
-export { LOGIN_Student,ADD_Student, ADD_Class, ADD_Subject,ADD_Vedio }
+export { LOGIN_Student,ADD_Student, ADD_Class, ADD_Subject,ADD_Vedio ,LOGOUT_Student}

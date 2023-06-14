@@ -28,9 +28,6 @@ const AdminVedios = () => {
     handleOpen()
   }
   const addVedioHandler = async (formData: { title: string, description: string, url: string }) => {
-    console.log(formData.description, formData.title, formData.url, id)
-
-
     try {
       await addVedioMutation({
         variables: {

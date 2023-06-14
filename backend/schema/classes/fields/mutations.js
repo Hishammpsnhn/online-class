@@ -1,5 +1,5 @@
 import { GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString } from "graphql";
-import { UserLogin, addNewClass, addNewSubject, addNewVedio, addStudent } from "../resolver.js";
+import { UserLogin, UserLogout, addNewClass, addNewSubject, addNewVedio, addStudent } from "../resolver.js";
 import { ClassesType, SubjectsType, UserLoginType, UserType, VedioType } from "../type.js";
 
 export const addUser = {
@@ -55,4 +55,12 @@ export const login = {
         password: { type: GraphQLNonNull(GraphQLString) },
     },
     resolve: UserLogin
+}
+export const logout = {
+    type: UserLoginType,
+    description: 'logout',
+    args: {
+        email: { type: GraphQLNonNull(GraphQLString) },
+    },
+    resolve: UserLogout
 }

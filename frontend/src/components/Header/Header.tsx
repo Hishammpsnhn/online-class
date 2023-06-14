@@ -14,6 +14,8 @@ import ModalAddStudent from '../Modal/ModalAddStudent';
 import { UserContext } from '../../context/UserContext';
 import { AppBar } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
+import { LOGOUT_Student } from '../../graphql/mutaion';
+import { useMutation } from '@apollo/client';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -24,12 +26,21 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const { user,setUser } = React.useContext(UserContext);
+  const [logoutStudendMutation] = useMutation(LOGOUT_Student);
+  const { user, setUser } = React.useContext(UserContext);
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleLogout = async () => {
+    await logoutStudendMutation({
+      variables: {
+        email: user?.email,
+      }
+    })
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -52,6 +63,7 @@ function Header() {
       handleCloseUserMenu()
     } else if (setting === "Logout") {
       localStorage.removeItem('userInfo');
+      if (user) handleLogout()
       setUser(null)
       handleCloseUserMenu();
       navigate('/')
@@ -155,7 +167,7 @@ function Header() {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar>{user?.name.charAt(0)}</Avatar>
+                    <Avatar>{user?.name.charAt(0)}</Avatar>
                   </IconButton>
                 </Tooltip>
                 <Menu

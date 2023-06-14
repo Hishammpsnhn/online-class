@@ -99,6 +99,18 @@ export async function UserLogin(parent, args) {
         throw new Error("Student does not exist")
     }
 }
+export async function UserLogout(parent, args) {
+    const { email } = args;
+    console.log("emia",email)
+    const user = await User.findOne({ email })
+    if (user) {
+        user.loggedIn = false;
+        user.save();
+        
+    } else {
+        throw new Error("Student does not exist")
+    }
+}
 
 //queries
 
