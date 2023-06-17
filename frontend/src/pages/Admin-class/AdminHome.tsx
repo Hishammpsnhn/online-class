@@ -20,7 +20,7 @@ const AdminHome = () => {
 
     const { loading, error, data, refetch } = useQuery(GET_Classes);
     const [addClassMutation] = useMutation(ADD_Class);
-
+console.log(data)
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

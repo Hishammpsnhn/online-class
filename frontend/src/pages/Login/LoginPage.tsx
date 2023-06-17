@@ -5,9 +5,7 @@ import { handleFormChange } from '../../utils/utils';
 import { LOGIN_Student } from '../../graphql/mutaion';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header/Header';
 import { UserContext } from '../../context/UserContext';
-import { json } from 'stream/consumers';
 
 
 const LoginPage: React.FC = () => {
@@ -20,6 +18,7 @@ const LoginPage: React.FC = () => {
 
     const classes = useStyles();
     const navigate = useNavigate()
+    const isFormValid = formData.email !== '' && formData.password !== '';
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         handleFormChange(event.target as HTMLInputElement, setFormData);
     };
@@ -30,7 +29,7 @@ const LoginPage: React.FC = () => {
             const user = JSON.parse(userInfo);
             if (user?.isAdmin) {
                 navigate('/admin')
-            }else{
+            } else {
                 navigate('/home')
             }
         }
@@ -38,8 +37,6 @@ const LoginPage: React.FC = () => {
 
 
     const handleSubmit = async (event: FormEvent) => {
-        event.preventDefault()
-        console.log(formData)
         event.preventDefault();
         try {
             const { data } = await loginStudendMutation({
@@ -52,8 +49,8 @@ const LoginPage: React.FC = () => {
             localStorage.setItem('userInfo', JSON.stringify(data.login));
             const userInfo = localStorage.getItem("userInfo")
             if (userInfo) {
-              const ParseUser = JSON.parse(userInfo)
-              setUser(ParseUser)
+                const ParseUser = JSON.parse(userInfo)
+                setUser(ParseUser)
             }
             navigate('/home')
 
@@ -66,36 +63,41 @@ const LoginPage: React.FC = () => {
 
     return (
         <>
-        <div className={classes.container}>
-            <Paper className={classes.paper}>
-                <Typography variant='h4' mt={2} textAlign={'center'}>LOGIN</Typography>
-                <form onSubmit={handleSubmit}>
-                    <TextField
-                        type="email"
-                        name="email"
-                        label="Email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        fullWidth
-                        required
-                        margin="normal"
-                    />
-                    <TextField
-                        type="password"
-                        name="password"
-                        label="Password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        fullWidth
-                        required
-                        margin="normal"
-                    />
-                    <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '5px' }}>
-                        Login
-                    </Button>
-                </form>
-            </Paper>
-        </div>
+            <div className={classes.container}>
+                <Paper className={classes.paper}>
+                    <Typography variant='h4' mt={2} textAlign={'center'}>LOGIN</Typography>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            type="email"
+                            name="email"
+                            label="Email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            fullWidth
+                            required
+                            margin="normal"
+                        />
+                        <TextField
+                            type="password"
+                            name="password"
+                            label="Password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            fullWidth
+                            required
+                            margin="normal"
+                        />
+                        <Button
+                            fullWidth style={{ marginTop: '5px' }}
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            disabled={!isFormValid}>
+                            Login
+                        </Button>
+                    </form>
+                </Paper>
+            </div>
         </>
     );
 };
